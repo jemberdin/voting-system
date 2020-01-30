@@ -39,7 +39,6 @@ public class User extends AbstractNamedEntity {
     @BatchSize(size = 200)
     private Set<Role> roles;
 
-
     public User() {
     }
 
