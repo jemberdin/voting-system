@@ -1,6 +1,6 @@
-package com.jemberdin.votingsystem.web.user;
+package com.jemberdin.votingsystem.web.restaurant;
 
-import com.jemberdin.votingsystem.model.User;
+import com.jemberdin.votingsystem.model.Restaurant;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -11,25 +11,25 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = AdminRestController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
-public class AdminRestController extends AbstractUserController {
+@RequestMapping(value = RestaurantAdminRestController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
+public class RestaurantAdminRestController extends AbstractRestaurantController {
 
-    static final String REST_URL = "/rest/admin/users";
+    static final String REST_URL = "/rest/admin/restaurants";
 
     @GetMapping
-    public List<User> getAll() {
+    public List<Restaurant> getAll() {
         return super.getAll();
     }
 
     @Override
     @GetMapping("/{id}")
-    public User get(@PathVariable int id) {
+    public Restaurant get(@PathVariable int id) {
         return super.get(id);
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<User> createWithLocation(@RequestBody User user) {
-        User created = super.create(user);
+    public ResponseEntity<Restaurant> createWithLocation(@RequestBody Restaurant restaurant) {
+        Restaurant created = super.create(restaurant);
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(REST_URL + "/{id}")
                 .buildAndExpand(created.getId()).toUri();
@@ -46,19 +46,19 @@ public class AdminRestController extends AbstractUserController {
     @Override
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void update(@RequestBody User user, @PathVariable int id) {
-        super.update(user, id);
-    }
-
-    @GetMapping("/by")
-    public User getByMail(@RequestParam String email) {
-        return super.getByMail(email);
+    public void update(@RequestBody Restaurant restaurant, @PathVariable int id) {
+        super.update(restaurant, id);
     }
 
     @Override
-    @PatchMapping("/{id}")
-    @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void enable(@PathVariable int id, @RequestParam boolean enabled) {
-        super.enable(id, enabled);
+    @GetMapping("/by")
+    public Restaurant getByName(@RequestParam String name) {
+        return super.getByName(name);
+    }
+
+    @Override
+    @GetMapping("/result")
+    public List<Restaurant> getAllWithVotes() {
+        return super.getAllWithVotes();
     }
 }

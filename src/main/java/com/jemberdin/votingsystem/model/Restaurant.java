@@ -2,7 +2,6 @@ package com.jemberdin.votingsystem.model;
 
 import javax.persistence.*;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name = "restaurants", uniqueConstraints = {@UniqueConstraint(columnNames = "name", name = "restaurants_unique_name_idx")})
@@ -13,7 +12,7 @@ public class Restaurant extends AbstractNamedEntity {
     protected List<Vote> votes;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
-    private List<Menu> menus;
+    protected List<Menu> menus;
 
     public Restaurant() { }
 

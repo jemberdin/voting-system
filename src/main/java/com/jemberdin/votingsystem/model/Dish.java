@@ -20,7 +20,7 @@ public class Dish extends AbstractNamedEntity {
     @JoinColumn(name = "menu_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @NotNull
-    private Menu menu;
+    protected Menu menu;
 
     public Dish() { }
 
