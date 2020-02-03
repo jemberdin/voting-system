@@ -2,6 +2,7 @@ package com.jemberdin.votingsystem.service;
 
 import com.jemberdin.votingsystem.model.Restaurant;
 import com.jemberdin.votingsystem.repository.RestaurantRepository;
+import com.jemberdin.votingsystem.to.RestaurantTo;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 

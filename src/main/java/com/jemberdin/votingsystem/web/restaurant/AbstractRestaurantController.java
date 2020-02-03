@@ -2,6 +2,8 @@ package com.jemberdin.votingsystem.web.restaurant;
 
 import com.jemberdin.votingsystem.model.Restaurant;
 import com.jemberdin.votingsystem.service.RestaurantService;
+import com.jemberdin.votingsystem.to.RestaurantTo;
+import com.jemberdin.votingsystem.util.RestaurantUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,8 +52,8 @@ public abstract class AbstractRestaurantController {
         return service.getByName(name);
     }
 
-    public List<Restaurant> getAllWithVotes() {
+    public List<RestaurantTo> getAllWithVotes() {
         log.info("getAll restaurants with votes");
-        return service.getAllWithVotes();
+        return RestaurantUtil.getTos(service.getAllWithVotes());
     }
 }

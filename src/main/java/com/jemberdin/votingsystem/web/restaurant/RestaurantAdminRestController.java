@@ -1,6 +1,7 @@
 package com.jemberdin.votingsystem.web.restaurant;
 
 import com.jemberdin.votingsystem.model.Restaurant;
+import com.jemberdin.votingsystem.to.RestaurantTo;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -58,7 +59,7 @@ public class RestaurantAdminRestController extends AbstractRestaurantController 
 
     @Override
     @GetMapping("/result")
-    public List<Restaurant> getAllWithVotes() {
+    public List<RestaurantTo> getAllWithVotes() {
         return super.getAllWithVotes();
     }
 }
