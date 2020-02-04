@@ -17,17 +17,6 @@ public class RestaurantAdminRestController extends AbstractRestaurantController 
 
     static final String REST_URL = "/rest/admin/restaurants";
 
-    @GetMapping
-    public List<Restaurant> getAll() {
-        return super.getAll();
-    }
-
-    @Override
-    @GetMapping("/{id}")
-    public Restaurant get(@PathVariable int id) {
-        return super.get(id);
-    }
-
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Restaurant> createWithLocation(@RequestBody Restaurant restaurant) {
         Restaurant created = super.create(restaurant);
@@ -51,11 +40,6 @@ public class RestaurantAdminRestController extends AbstractRestaurantController 
         super.update(restaurant, id);
     }
 
-    @Override
-    @GetMapping("/by")
-    public Restaurant getByName(@RequestParam String name) {
-        return super.getByName(name);
-    }
 
     @Override
     @GetMapping("/result")
