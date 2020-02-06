@@ -65,6 +65,7 @@ VALUES  (1006, 'House salad', 350),
 
 INSERT INTO votes (user_id, restaurant_id, date)
 VALUES  (1000, 1003, '2020-01-14'),
+        (1000, 1003, '2020-01-15'),
         (1001, 1003, '2020-01-14'),
         (1002, 1003, '2020-01-14');
 

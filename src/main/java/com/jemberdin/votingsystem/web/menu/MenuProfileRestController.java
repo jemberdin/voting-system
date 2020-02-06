@@ -1,5 +1,6 @@
 package com.jemberdin.votingsystem.web.menu;
 
+import com.jemberdin.votingsystem.service.MenuService;
 import com.jemberdin.votingsystem.to.MenuTo;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +14,10 @@ import java.util.List;
 public class MenuProfileRestController extends AbstractMenuController {
 
     static final String REST_URL = "/rest/menus";
+
+    public MenuProfileRestController(MenuService service) {
+        super(service);
+    }
 
     @Override
     @GetMapping
