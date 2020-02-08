@@ -1,14 +1,11 @@
 package com.jemberdin.votingsystem.util;
 
-import java.time.format.DateTimeFormatter;
-
+import java.time.LocalTime;
 
 public class DateTimeUtil {
 
-    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
-    private DateTimeUtil() {
-    }
+    public static final LocalTime FINISHING_UPDATE_VOTE_TIME = LocalTime.of(11, 00);
 
 
 }

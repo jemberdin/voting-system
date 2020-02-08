@@ -6,9 +6,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
-import static com.jemberdin.votingsystem.util.ValidationUtil.checkNotFoundWithId;
+import static com.jemberdin.votingsystem.util.ValidationUtil.*;
 
 @Service
 public class VoteService {
@@ -34,6 +35,8 @@ public class VoteService {
 
     public void update(Vote vote, int userId, int restaurantId) {
         Assert.notNull(vote, "vote must not be null");
+        checkVotingDate(vote.getDate(), LocalDate.now());
+        checkTimeToUpdateVote(LocalDateTime.now().toLocalTime());
         checkNotFoundWithId(repository.save(vote, userId, restaurantId, LocalDate.now()), vote.getId());
     }
 

@@ -8,7 +8,7 @@ import org.springframework.util.Assert;
 import java.time.LocalDate;
 import java.util.List;
 
-import static com.jemberdin.votingsystem.util.ValidationUtil.checkNotFoundWithId;
+import static com.jemberdin.votingsystem.util.ValidationUtil.*;
 
 @Service
 public class MenuService {
@@ -29,6 +29,7 @@ public class MenuService {
 
     public Menu create(Menu menu, int restaurantId) {
         Assert.notNull(menu, "menu must not be null");
+        checkCreateMenuForDate(menu.getDate());
         return repository.save(menu, restaurantId);
     }
 
@@ -38,12 +39,13 @@ public class MenuService {
 
     public void update(Menu menu, int restaurantId) {
         Assert.notNull(menu, "menu must not be null");
+        checkCreateMenuForDate(menu.getDate());
         checkNotFoundWithId(repository.save(menu, restaurantId), menu.getId());
     }
 
     public Menu getByDate(int restaurantId, LocalDate date) {
         Assert.notNull(date, "date must not be null");
-        return repository.getByDate(restaurantId, date);
+        return checkNotFoundWithDate(repository.getByDate(restaurantId, date), date);
     }
 
     public List<Menu> getAllTodayWithRestaurantAndDishes() {
