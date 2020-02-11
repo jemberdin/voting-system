@@ -1,33 +1,43 @@
 package com.jemberdin.votingsystem.service;
 
+import com.jemberdin.votingsystem.AuthorizedUser;
 import com.jemberdin.votingsystem.model.User;
 import com.jemberdin.votingsystem.repository.UserRepository;
 import com.jemberdin.votingsystem.to.UserTo;
 import com.jemberdin.votingsystem.util.UserUtil;
-import com.jemberdin.votingsystem.util.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import java.util.List;
 
+import static com.jemberdin.votingsystem.util.UserUtil.prepareToSave;
 import static com.jemberdin.votingsystem.util.ValidationUtil.checkNotFound;
 import static com.jemberdin.votingsystem.util.ValidationUtil.checkNotFoundWithId;
 
-@Service
-public class UserService {
+@Service("userService")
+@Scope(proxyMode = ScopedProxyMode.TARGET_CLASS)
+public class UserService implements UserDetailsService {
 
     private final UserRepository repository;
 
+    private final PasswordEncoder passwordEncoder;
+
     @Autowired
-    public UserService(UserRepository repository) {
+    public UserService(UserRepository repository, PasswordEncoder passwordEncoder) {
         this.repository = repository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public User create(User user) {
         Assert.notNull(user, "user must not be null");
-        return repository.save(user);
+        return prepareAndSave(user);
     }
 
     public void delete(int id) {
@@ -49,13 +59,13 @@ public class UserService {
 
     public void update(User user) {
         Assert.notNull(user, "user must not be null");
-        repository.save(user);
+        prepareAndSave(user);
     }
 
     @Transactional
     public void update(UserTo userTo) {
         User user = get(userTo.id());
-        repository.save(UserUtil.updateFromTo(user, userTo));
+        prepareAndSave(UserUtil.updateFromTo(user, userTo));
     }
 
     @Transactional
@@ -63,5 +73,18 @@ public class UserService {
         User user = get(id);
         user.setEnabled(enabled);
         repository.save(user);
+    }
+
+    @Override
+    public AuthorizedUser loadUserByUsername(String email) throws UsernameNotFoundException {
+        User user = repository.getByEmail(email.toLowerCase());
+        if (user == null) {
+            throw new UsernameNotFoundException("User " + email + " is not found");
+        }
+        return new AuthorizedUser(user);
+    }
+
+    private User prepareAndSave(User user) {
+        return repository.save(prepareToSave(user, passwordEncoder));
     }
 }

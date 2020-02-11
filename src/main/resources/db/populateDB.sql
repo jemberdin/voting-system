@@ -8,9 +8,9 @@ DELETE FROM votes;
 ALTER SEQUENCE global_seq RESTART WITH 1000;
 
 INSERT INTO users (name, email, password)
-VALUES  ('User1', 'user1@gmail.com', 'password'),
-        ('User2', 'user2@gmail.com', 'password'),
-        ('Admin', 'admin@gmail.com', 'admin');
+VALUES  ('User1', 'user1@gmail.com', '{noop}password'),
+        ('User2', 'user2@gmail.com', '{noop}password'),
+        ('Admin', 'admin@gmail.com', '{noop}admin');
 
 INSERT INTO user_roles (role, user_id)
 VALUES  ('ROLE_USER', 1000),
