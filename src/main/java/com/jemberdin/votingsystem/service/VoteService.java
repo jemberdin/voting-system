@@ -16,8 +16,8 @@ public class VoteService {
 
     private final VoteRepository repository;
 
-    public VoteService(VoteRepository voteRepository) {
-        this.repository = voteRepository;
+    public VoteService(VoteRepository repository) {
+        this.repository = repository;
     }
 
     public List<Vote> getAll(int userId) {
@@ -28,15 +28,14 @@ public class VoteService {
         return checkNotFoundWithId(repository.get(id, userId), id);
     }
 
-    public Vote create(Vote vote, int userId, int restaurantId) {
-        Assert.notNull(vote, "vote must not be null");
-        return repository.save(vote, userId, restaurantId, LocalDate.now());
+    public Vote create(int userId, int restaurantId) {
+        return repository.save(new Vote(), userId, restaurantId, LocalDate.now());
     }
 
-    public void update(Vote vote, int userId, int restaurantId) {
-        Assert.notNull(vote, "vote must not be null");
-        checkVotingDate(vote.getDate(), LocalDate.now());
+    public void update(int id, int userId, int restaurantId) {
+        Vote vote = get(id, userId);
         checkTimeToUpdateVote(LocalDateTime.now().toLocalTime());
+        checkVotingDate(vote.getDate(), LocalDate.now());
         checkNotFoundWithId(repository.save(vote, userId, restaurantId, LocalDate.now()), vote.getId());
     }
 

@@ -15,8 +15,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 import java.util.List;
 
-import static com.jemberdin.votingsystem.util.ValidationUtil.assureIdConsistent;
-
 @RestController
 @RequestMapping(value = VoteRestController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 public class VoteRestController {
@@ -25,34 +23,32 @@ public class VoteRestController {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    private VoteService voteService;
+    private VoteService service;
 
     @Autowired
-    public VoteRestController(VoteService voteService) {
-        this.voteService = voteService;
+    public VoteRestController(VoteService service) {
+        this.service = service;
     }
 
     @GetMapping
     public List<Vote> getAll() {
         int userId = SecurityUtil.authUserId();
         log.info("getAll for user {}", userId);
-        return voteService.getAllWithRestaurant(userId);
+        return service.getAllWithRestaurant(userId);
     }
 
     @GetMapping("/{id}")
     public Vote get(@PathVariable int id) {
         int userId = SecurityUtil.authUserId();
         log.info("get vote {} for user {}", id, userId);
-        return voteService.getWithRestaurant(id, userId);
+        return service.getWithRestaurant(id, userId);
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Vote> createWithLocation(@RequestBody Vote vote) {
+    public ResponseEntity<Vote> createWithLocation(@RequestParam int restaurantId) {
         int userId = SecurityUtil.authUserId();
-        int restaurantId = vote.getRestaurant().getId();
         log.info("create vote for user {} for restaurant {}", userId, restaurantId);
-        Vote created = voteService.create(vote, userId, restaurantId);
-        System.out.println(created);
+        Vote created = service.create(userId, restaurantId);
 
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(REST_URL + "/{id}")
@@ -62,11 +58,9 @@ public class VoteRestController {
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void update(@RequestBody Vote vote, @PathVariable int id) {
+    public void update(@PathVariable int id, @RequestParam int restaurantId) {
         int userId = SecurityUtil.authUserId();
-        int restaurantId = vote.getRestaurant().getId();
-        assureIdConsistent(vote, id);
         log.info("update vote for user {}", userId);
-        voteService.update(vote, userId, restaurantId);
+        service.update(id, userId, restaurantId);
     }
 }
