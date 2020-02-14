@@ -23,16 +23,17 @@ VALUES ('French Restaurant'),  --1003
        ('Chinese Restaurant'), --1004
        ('Italian Restaurant'); --1005
 
+
 INSERT INTO menus (restaurant_id, date)
-VALUES  (1003, current_date), --1006
-        (1003, '2020-01-07'), --1007
-        (1003, '2020-01-08'), --1008
-        (1004, current_date), --1009
-        (1004, '2010-01-07'), --1010
-        (1004, '2010-01-08'), --1011
-        (1005, current_date), --1012
-        (1005, '2010-01-07'), --1013
-        (1005, '2010-01-08'); --1014
+VALUES  (1003, current_date),                    --1006
+        (1003, current_date + INTERVAL '1' DAY), --1007
+        (1003, current_date - INTERVAL '1' DAY), --1008
+        (1004, current_date),                    --1009
+        (1004, current_date + INTERVAL '1' DAY), --1010
+        (1004, current_date - INTERVAL '1' DAY), --1011
+        (1005, current_date - INTERVAL '2' DAY), --1012
+        (1005, current_date + INTERVAL '1' DAY), --1013
+        (1005, current_date - INTERVAL '1' DAY); --1014
 
 INSERT INTO dishes (menu_id, name, price)
 VALUES  (1006, 'House salad', 350),
@@ -64,8 +65,11 @@ VALUES  (1006, 'House salad', 350),
         (1014, 'Panna cotta della cassa', 700); --1041
 
 INSERT INTO votes (user_id, restaurant_id, date)
-VALUES  (1000, 1003, '2020-01-14'),
-        (1000, 1003, '2020-01-15'),
-        (1001, 1003, '2020-01-14'),
-        (1002, 1003, '2020-01-14');
+VALUES  (1000, 1003, current_date),                    -- 1042
+        (1000, 1003, current_date - INTERVAL '1' DAY), -- 1043
+        (1001, 1003, current_date - INTERVAL '1' DAY), -- 1044
+        (1002, 1003, current_date - INTERVAL '1' DAY); -- 1045
+
+INSERT INTO restaurants (name)
+VALUES ('Estonian Restaurant'); --1046
 

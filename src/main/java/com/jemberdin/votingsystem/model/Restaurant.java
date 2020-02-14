@@ -11,9 +11,6 @@ public class Restaurant extends AbstractNamedEntity {
     @OrderBy("date DESC")
     protected List<Vote> votes;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
-    protected List<Menu> menus;
-
     public Restaurant() { }
 
     public Restaurant(Integer id, String name) {
@@ -24,16 +21,8 @@ public class Restaurant extends AbstractNamedEntity {
         return votes;
     }
 
-    public List<Menu> getMenus() {
-        return menus;
-    }
-
     public void setVotes(List<Vote> votes) {
         this.votes = votes;
-    }
-
-    public void setMenus(List<Menu> menus) {
-        this.menus = menus;
     }
 
     @Override
