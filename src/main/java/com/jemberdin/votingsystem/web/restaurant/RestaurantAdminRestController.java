@@ -1,10 +1,12 @@
 package com.jemberdin.votingsystem.web.restaurant;
 
+import com.jemberdin.votingsystem.View;
 import com.jemberdin.votingsystem.model.Restaurant;
 import com.jemberdin.votingsystem.to.RestaurantTo;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -18,7 +20,7 @@ public class RestaurantAdminRestController extends AbstractRestaurantController 
     static final String REST_URL = "/rest/admin/restaurants";
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Restaurant> createWithLocation(@RequestBody Restaurant restaurant) {
+    public ResponseEntity<Restaurant> createWithLocation(@Validated(View.Rest.class) @RequestBody Restaurant restaurant) {
         Restaurant created = super.create(restaurant);
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(REST_URL + "/{id}")
@@ -36,7 +38,7 @@ public class RestaurantAdminRestController extends AbstractRestaurantController 
     @Override
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void update(@RequestBody Restaurant restaurant, @PathVariable int id) {
+    public void update(@Validated(View.Rest.class) @RequestBody Restaurant restaurant, @PathVariable int id) {
         super.update(restaurant, id);
     }
 }

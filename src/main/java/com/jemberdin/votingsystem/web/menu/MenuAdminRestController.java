@@ -1,5 +1,6 @@
 package com.jemberdin.votingsystem.web.menu;
 
+import com.jemberdin.votingsystem.View;
 import com.jemberdin.votingsystem.model.Menu;
 import com.jemberdin.votingsystem.service.MenuService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -39,7 +41,7 @@ public class MenuAdminRestController extends AbstractMenuController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Menu> createWithLocation(@RequestBody Menu menu, @RequestParam int restaurantId) {
+    public ResponseEntity<Menu> createWithLocation(@Validated(View.Rest.class) @RequestBody Menu menu, @RequestParam int restaurantId) {
         Menu created = super.create(menu, restaurantId);
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(REST_URL)
@@ -58,7 +60,7 @@ public class MenuAdminRestController extends AbstractMenuController {
     @Override
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void update(@RequestBody Menu menu, @PathVariable int id, @RequestParam int restaurantId) {
+    public void update(@Validated(View.Rest.class) @RequestBody Menu menu, @PathVariable int id, @RequestParam int restaurantId) {
         super.update(menu, id, restaurantId);
     }
 

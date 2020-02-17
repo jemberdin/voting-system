@@ -1,5 +1,6 @@
 package com.jemberdin.votingsystem.web.dish;
 
+import com.jemberdin.votingsystem.View;
 import com.jemberdin.votingsystem.model.Dish;
 import com.jemberdin.votingsystem.service.DishService;
 import org.slf4j.Logger;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -46,7 +48,7 @@ public class DishRestController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Dish> createWithLocation(@RequestBody Dish dish, @RequestParam int menuId) {
+    public ResponseEntity<Dish> createWithLocation(@Validated(View.Rest.class) @RequestBody Dish dish, @RequestParam int menuId) {
         checkNew(dish);
         log.info("create {} for menu {}", dish, menuId);
         Dish created = dishService.create(dish, menuId);
@@ -66,7 +68,7 @@ public class DishRestController {
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void update(@RequestBody Dish dish, @PathVariable int id, @RequestParam int menuId) {
+    public void update(@Validated(View.Rest.class) @RequestBody Dish dish, @PathVariable int id, @RequestParam int menuId) {
         assureIdConsistent(dish, id);
         log.info("update {} for menu {}", dish, menuId);
         dishService.update(dish, menuId);
