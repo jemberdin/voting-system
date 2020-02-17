@@ -28,4 +28,5 @@ public class VoteTestData {
     }
 
     public static TestMatchers<Vote> VOTE_MATCHERS = TestMatchers.useFieldsComparator(Vote.class, "user", "restaurant");
+    public static TestMatchers<Vote> VOTE_MATCHERS_STRING = TestMatchers.useEquals(Vote.class);
 }

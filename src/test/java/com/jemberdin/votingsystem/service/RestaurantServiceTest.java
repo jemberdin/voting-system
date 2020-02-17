@@ -76,7 +76,7 @@ public class RestaurantServiceTest extends AbstractServiceTest {
     @Test
     void getAll() throws Exception {
         List<Restaurant> all = service.getAll();
-        RESTAURANT_MATCHERS.assertMatch(all, RESTAURANT2, RESTAURANT1, RESTAURANT3);
+        RESTAURANT_MATCHERS.assertMatch(all, RESTAURANT2, RESTAURANT4, RESTAURANT1, RESTAURANT3);
     }
 
     @Test
@@ -87,7 +87,7 @@ public class RestaurantServiceTest extends AbstractServiceTest {
     @Test
     void getAllWithVotes() throws Exception {
         List<Restaurant> restaurants = service.getAllWithVotes();
-        RESTAURANT_MATCHERS.assertMatch(restaurants, RESTAURANT1, RESTAURANT2, RESTAURANT3);
+        RESTAURANT_MATCHERS.assertMatch(restaurants, RESTAURANT1, RESTAURANT2, RESTAURANT4, RESTAURANT3);
 
         assertEquals(4, restaurants.get(0).getVotes().size());
         assertEquals(RESTAURANT1.getName(), restaurants.get(0).getName());
@@ -96,6 +96,9 @@ public class RestaurantServiceTest extends AbstractServiceTest {
         assertEquals(RESTAURANT2.getName(), restaurants.get(1).getName());
 
         assertEquals(0, restaurants.get(2).getVotes().size());
-        assertEquals(RESTAURANT3.getName(), restaurants.get(2).getName());
+        assertEquals(RESTAURANT4.getName(), restaurants.get(2).getName());
+
+        assertEquals(0, restaurants.get(3).getVotes().size());
+        assertEquals(RESTAURANT3.getName(), restaurants.get(3).getName());
     }
 }

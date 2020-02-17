@@ -39,11 +39,4 @@ public class RestaurantAdminRestController extends AbstractRestaurantController 
     public void update(@RequestBody Restaurant restaurant, @PathVariable int id) {
         super.update(restaurant, id);
     }
-
-
-    @Override
-    @GetMapping("/result")
-    public List<RestaurantTo> getAllWithVotes() {
-        return super.getAllWithVotes();
-    }
 }

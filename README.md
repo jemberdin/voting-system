@@ -17,7 +17,7 @@ Each restaurant provides new menu each day.
 
 ## cURL Command Examples
 ### New unregistered user
-Register: `curl -s -X POST -d '{"name":"testuser","email":"testuser@gmail.com","password":"password","roles":["ROLE_USER"]}' -H 'Content-Type:application/json;charset=UTF-8' http://localhost:8080/votingsystem/rest/profile/register`
+Register: `curl -s -X POST -d '{"name":"testuser","email":"testuser@gmail.com","password":"password"}' -H 'Content-Type:application/json;charset=UTF-8' http://localhost:8080/votingsystem/rest/profile/register`
 
 ### User with ADMIN role
 #### User

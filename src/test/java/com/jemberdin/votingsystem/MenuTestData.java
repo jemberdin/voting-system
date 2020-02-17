@@ -1,6 +1,7 @@
 package com.jemberdin.votingsystem;
 
 import com.jemberdin.votingsystem.model.Menu;
+import com.jemberdin.votingsystem.to.MenuTo;
 
 import java.time.LocalDate;
 
@@ -25,4 +26,5 @@ public class MenuTestData {
     }
 
     public static TestMatchers<Menu> MENU_MATCHERS = TestMatchers.useFieldsComparator(Menu.class, "restaurant", "dishes");
+    public static TestMatchers<MenuTo> MENU_TO_MATCHERS = TestMatchers.useEquals(MenuTo.class);
 }

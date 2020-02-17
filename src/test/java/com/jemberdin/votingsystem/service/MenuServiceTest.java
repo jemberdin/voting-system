@@ -40,7 +40,7 @@ public class MenuServiceTest extends AbstractServiceTest {
     @Test
     void delete() throws Exception {
         System.out.println();
-        service.delete(MENU1_ID, RESTAURANT1_ID);      //Menu1 in french restaurant, restaurant1 = french restaurant
+        service.delete(MENU1_ID, RESTAURANT1_ID);
         assertThrows(NotFoundException.class, () ->
                 service.get(MENU1_ID, RESTAURANT1_ID));
     }

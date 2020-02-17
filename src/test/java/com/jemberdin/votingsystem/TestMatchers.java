@@ -17,6 +17,10 @@ public class TestMatchers<T> {
         return new TestMatchers<>(clazz, false, fieldsToIgnore);
     }
 
+    public static <T> TestMatchers<T> useEquals(Class<T> clazz) {
+        return new TestMatchers<>(clazz, true);
+    }
+
     private TestMatchers(Class<T> clazz, boolean useEquals, String... fieldsToIgnore) {
         this.clazz = clazz;
         this.useEquals = useEquals;
