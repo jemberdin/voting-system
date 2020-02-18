@@ -21,6 +21,8 @@ import static com.jemberdin.votingsystem.TestUtil.*;
 import static com.jemberdin.votingsystem.UserTestData.*;
 import static com.jemberdin.votingsystem.VoteTestData.*;
 import static com.jemberdin.votingsystem.util.DateTimeUtil.FINISHING_UPDATE_VOTE_TIME;
+import static com.jemberdin.votingsystem.util.exception.ErrorType.VALIDATION_ERROR;
+import static com.jemberdin.votingsystem.web.ExceptionInfoHandler.EXCEPTION_DUPLICATE_VOTE;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -28,8 +30,12 @@ public class VoteRestControllerTest extends AbstractControllerTest {
 
     private static final String REST_URL = VoteRestController.REST_URL + '/';
 
-    @Autowired
     private VoteService service;
+
+    @Autowired
+    public VoteRestControllerTest(VoteService service) {
+        this.service = service;
+    }
 
     @Test
     void get() throws Exception {
@@ -55,6 +61,14 @@ public class VoteRestControllerTest extends AbstractControllerTest {
     void getUnAuth() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get(REST_URL + VOTE1_ID))
                 .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    void getNotFound() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get(REST_URL + VOTE1_ID)
+                .with(userHttpBasic(USER2)))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity());
     }
 
     @Test
@@ -102,6 +116,52 @@ public class VoteRestControllerTest extends AbstractControllerTest {
             Vote vote = service.getWithRestaurant(VOTE1_ID, USER1_ID);
             VOTE_MATCHERS.assertMatch(vote, updated);
             RestaurantTestData.RESTAURANT_MATCHERS.assertMatch(vote.getRestaurant(), RESTAURANT2);
+        } else {
+            mockMvc.perform(MockMvcRequestBuilders.put(REST_URL + VOTE1_ID)
+                    .param("restaurantId", String.valueOf(RESTAURANT2_ID))
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .with(userHttpBasic(USER1)))
+                    .andExpect(status().isUnprocessableEntity())
+                    .andExpect(jsonPath("$.type").value(VALIDATION_ERROR.name()))
+                    .andExpect(jsonPath("$.details").value(
+                            "com.jemberdin.votingsystem.util.exception.VotingTimeException: " +
+                                    "Update is not allowed after " + FINISHING_UPDATE_VOTE_TIME));
         }
+    }
+
+    @Test
+    @Transactional(propagation = Propagation.NEVER)
+    void updateAfterFinishingVoteTime() throws Exception {
+        if (LocalTime.now().isAfter(FINISHING_UPDATE_VOTE_TIME)) {
+            mockMvc.perform(MockMvcRequestBuilders.put(REST_URL + VOTE1_ID)
+                    .param("restaurantId", String.valueOf(RESTAURANT2_ID))
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .with(userHttpBasic(USER1)))
+                    .andDo(print())
+                    .andExpect(status().isUnprocessableEntity())
+                    .andExpect(jsonPath("$.type").value(VALIDATION_ERROR.name()))
+                    .andExpect(jsonPath("$.details").value(
+                            "com.jemberdin.votingsystem.util.exception.VotingTimeException: " +
+                                    "Update is not allowed after " + FINISHING_UPDATE_VOTE_TIME));
+        } else {
+            mockMvc.perform(MockMvcRequestBuilders.put(REST_URL + VOTE1_ID)
+                    .param("restaurantId", String.valueOf(RESTAURANT2_ID))
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .with(userHttpBasic(USER1)))
+                    .andExpect(status().isNoContent());
+        }
+    }
+
+    @Test
+    @Transactional(propagation = Propagation.NEVER)
+    void createWithSameDate() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.post(REST_URL)
+                .param("restaurantId", String.valueOf(RESTAURANT2_ID))
+                .contentType(MediaType.APPLICATION_JSON)
+                .with(userHttpBasic(USER1)))
+                .andDo(print())
+                .andExpect(status().isConflict())
+                .andExpect(jsonPath("$.type").value(VALIDATION_ERROR.name()))
+                .andExpect(jsonPath("$.details").value(EXCEPTION_DUPLICATE_VOTE));
     }
 }

@@ -2,8 +2,10 @@ package com.jemberdin.votingsystem.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.jemberdin.votingsystem.View;
 import com.jemberdin.votingsystem.util.DateTimeUtil;
 import org.hibernate.annotations.BatchSize;
+import org.hibernate.validator.constraints.SafeHtml;
 import org.springframework.util.CollectionUtils;
 
 import javax.persistence.*;
@@ -21,6 +23,7 @@ public class User extends AbstractNamedEntity {
     @Email
     @NotBlank
     @Size(max = 100)
+    @SafeHtml(groups = {View.Rest.class})
     private String email;
 
     @Column(name = "password", nullable = false)

@@ -23,8 +23,12 @@ public class RestaurantProfileRestControllerTest extends AbstractControllerTest 
 
     private static final String REST_URL = RestaurantProfileRestController.REST_URL + '/';
 
-    @Autowired
     private RestaurantService service;
+
+    @Autowired
+    public RestaurantProfileRestControllerTest(RestaurantService service) {
+        this.service = service;
+    }
 
     @Test
     void getAll() throws Exception {
@@ -54,6 +58,13 @@ public class RestaurantProfileRestControllerTest extends AbstractControllerTest 
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(result -> RESTAURANT_MATCHERS.assertMatch(readFromJsonMvcResult(result, Restaurant.class), RESTAURANT1));
+    }
+
+    @Test
+    void getNotFound() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get(REST_URL + 1)
+                .with(userHttpBasic(USER1)))
+                .andExpect(status().isUnprocessableEntity());
     }
 
     @Test

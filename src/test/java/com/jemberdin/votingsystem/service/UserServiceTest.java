@@ -15,8 +15,12 @@ import static com.jemberdin.votingsystem.UserTestData.*;
 
 public class UserServiceTest extends AbstractServiceTest {
 
-    @Autowired
     protected UserService service;
+
+    @Autowired
+    public UserServiceTest(UserService service) {
+        this.service = service;
+    }
 
     @Test
     void create() throws Exception {

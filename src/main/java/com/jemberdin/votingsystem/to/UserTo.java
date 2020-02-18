@@ -1,19 +1,22 @@
 package com.jemberdin.votingsystem.to;
 
+import org.hibernate.validator.constraints.SafeHtml;
+
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
-
 
 public class UserTo extends BaseTo {
 
     @NotBlank
     @Size(min = 2, max = 100)
+    @SafeHtml
     private String name;
 
     @Email
     @NotBlank
     @Size(max = 100)
+    @SafeHtml
     private String email;
 
     @NotBlank

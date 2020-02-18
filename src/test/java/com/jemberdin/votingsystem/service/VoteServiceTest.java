@@ -15,8 +15,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 import static com.jemberdin.votingsystem.RestaurantTestData.*;
-import static com.jemberdin.votingsystem.UserTestData.USER1_ID;
-import static com.jemberdin.votingsystem.UserTestData.USER2;
+import static com.jemberdin.votingsystem.UserTestData.*;
 import static com.jemberdin.votingsystem.VoteTestData.*;
 import static com.jemberdin.votingsystem.util.DateTimeUtil.DATE_TIME_FOR_TEST_AFTER;
 import static com.jemberdin.votingsystem.util.DateTimeUtil.FINISHING_UPDATE_VOTE_TIME;
@@ -26,11 +25,15 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class VoteServiceTest extends AbstractServiceTest {
 
-    @Autowired
     protected VoteService service;
 
-    @Autowired
     protected VoteRepository repository;
+
+    @Autowired
+    public VoteServiceTest(VoteService service, VoteRepository repository) {
+        this.service = service;
+        this.repository = repository;
+    }
 
     @Test
     void create() throws Exception {
@@ -133,8 +136,13 @@ public class VoteServiceTest extends AbstractServiceTest {
 
     @Test
     void updateForPastDate() throws Exception {
-        VotingDateException e = assertThrows(VotingDateException.class, () ->
-                service.update(VOTE2.getId(), USER1_ID, RESTAURANT2_ID));
-        assertEquals(e.getMessage(), "Must be today's date");
+        Vote updated = VOTE2;
+        if (LocalTime.now().isBefore(FINISHING_UPDATE_VOTE_TIME)) {
+            assertThrows(VotingDateException.class, () ->
+                    service.update(updated.getId(), USER1.getId(), RESTAURANT2_ID));
+        } else {
+            assertThrows(VotingDateException.class, () ->
+                    checkVotingDate(updated.getDate(), LocalDate.now()));
+        }
     }
 }

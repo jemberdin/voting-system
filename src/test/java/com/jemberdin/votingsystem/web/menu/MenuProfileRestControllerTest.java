@@ -22,8 +22,12 @@ public class MenuProfileRestControllerTest extends AbstractControllerTest {
 
     private static final String REST_URL = MenuProfileRestController.REST_URL + '/';
 
-    @Autowired
     private MenuService service;
+
+    @Autowired
+    public MenuProfileRestControllerTest(MenuService service) {
+        this.service = service;
+    }
 
     @Test
     void getDataForVoting() throws Exception {

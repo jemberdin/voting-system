@@ -17,8 +17,12 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class MenuServiceTest extends AbstractServiceTest {
 
-    @Autowired
     protected MenuService service;
+
+    @Autowired
+    public MenuServiceTest(MenuService service) {
+        this.service = service;
+    }
 
     @Test
     void create() throws Exception {

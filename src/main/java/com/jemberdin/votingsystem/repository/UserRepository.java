@@ -1,6 +1,7 @@
 package com.jemberdin.votingsystem.repository;
 
 import com.jemberdin.votingsystem.model.User;
+import org.hibernate.validator.constraints.SafeHtml;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;

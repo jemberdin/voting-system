@@ -39,8 +39,8 @@ public class VoteService {
 
     public void update(int id, int userId, int restaurantId) {
         Vote vote = get(id, userId);
-        checkVotingDate(vote.getDate(), LocalDate.now());
         checkTimeToUpdateVote(LocalDateTime.now().toLocalTime());
+        checkVotingDate(vote.getDate(), LocalDate.now());
         checkNotFoundWithId(voteRepository.save(vote, userId, restaurantId, LocalDate.now()), vote.getId());
     }
 
