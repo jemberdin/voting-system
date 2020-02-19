@@ -2,7 +2,9 @@ package com.jemberdin.votingsystem.web.restaurant;
 
 import com.jemberdin.votingsystem.View;
 import com.jemberdin.votingsystem.model.Restaurant;
+import com.jemberdin.votingsystem.service.RestaurantService;
 import com.jemberdin.votingsystem.to.RestaurantTo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +20,11 @@ import java.util.List;
 public class RestaurantAdminRestController extends AbstractRestaurantController {
 
     static final String REST_URL = "/rest/admin/restaurants";
+
+    @Autowired
+    public RestaurantAdminRestController(RestaurantService service) {
+        super(service);
+    }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Restaurant> createWithLocation(@Validated(View.Rest.class) @RequestBody Restaurant restaurant) {

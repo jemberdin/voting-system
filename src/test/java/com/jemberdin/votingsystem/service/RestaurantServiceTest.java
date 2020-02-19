@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 
 import javax.validation.ConstraintViolationException;
-
 import java.util.List;
 
 import static com.jemberdin.votingsystem.RestaurantTestData.*;

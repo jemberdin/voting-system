@@ -1,7 +1,9 @@
 package com.jemberdin.votingsystem.web.restaurant;
 
 import com.jemberdin.votingsystem.model.Restaurant;
+import com.jemberdin.votingsystem.service.RestaurantService;
 import com.jemberdin.votingsystem.to.RestaurantTo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,6 +14,11 @@ import java.util.List;
 public class RestaurantProfileRestController extends AbstractRestaurantController {
 
     static final String REST_URL = "/rest/restaurants";
+
+    @Autowired
+    public RestaurantProfileRestController(RestaurantService service) {
+        super(service);
+    }
 
     @GetMapping
     public List<Restaurant> getAll() {

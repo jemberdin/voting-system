@@ -2,7 +2,9 @@ package com.jemberdin.votingsystem.web.user;
 
 import com.jemberdin.votingsystem.View;
 import com.jemberdin.votingsystem.model.User;
+import com.jemberdin.votingsystem.service.UserService;
 import com.jemberdin.votingsystem.to.UserTo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +22,11 @@ import static com.jemberdin.votingsystem.web.SecurityUtil.authUserId;
 public class ProfileRestController extends AbstractUserController {
 
     static final String REST_URL = "/rest/profile";
+
+    @Autowired
+    public ProfileRestController(UserService service) {
+        super(service);
+    }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public User get() {

@@ -2,6 +2,9 @@ package com.jemberdin.votingsystem.web.user;
 
 import com.jemberdin.votingsystem.View;
 import com.jemberdin.votingsystem.model.User;
+import com.jemberdin.votingsystem.service.MenuService;
+import com.jemberdin.votingsystem.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +20,11 @@ import java.util.List;
 public class AdminRestController extends AbstractUserController {
 
     static final String REST_URL = "/rest/admin/users";
+
+    @Autowired
+    public AdminRestController(UserService service) {
+        super(service);
+    }
 
     @GetMapping
     public List<User> getAll() {
